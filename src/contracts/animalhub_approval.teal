@@ -1,0 +1,110 @@
+#pragma version 6
+txn ApplicationID
+int 0
+==
+bnz main_l8
+txn OnCompletion
+int DeleteApplication
+==
+bnz main_l7
+txna ApplicationArgs 0
+byte "buy"
+==
+bnz main_l6
+txna ApplicationArgs 0
+byte "release"
+==
+bnz main_l5
+err
+main_l5:
+byte "ADOPTED"
+int 0
+app_global_put
+int 1
+return
+main_l6:
+global GroupSize
+int 2
+==
+txn NumAppArgs
+int 2
+==
+&&
+byte "ADOPTED"
+app_global_get
+int 0
+==
+&&
+assert
+gtxn 1 TypeEnum
+int pay
+==
+gtxn 1 Receiver
+byte "ADDRESS"
+app_global_get
+==
+&&
+gtxn 1 Amount
+byte "AMOUNT"
+app_global_get
+==
+&&
+gtxn 1 Sender
+gtxn 0 Sender
+==
+&&
+assert
+byte "OWNER"
+txna ApplicationArgs 1
+app_global_put
+byte "ADDRESS"
+gtxn 1 Sender
+app_global_put
+byte "ADOPTED"
+int 1
+app_global_put
+int 1
+return
+main_l7:
+txn Sender
+global CreatorAddress
+==
+return
+main_l8:
+txn NumAppArgs
+int 5
+==
+assert
+txn Note
+byte "animal-hub:uv1"
+==
+assert
+txna ApplicationArgs 3
+btoi
+int 0
+>
+assert
+byte "NAME"
+txna ApplicationArgs 0
+app_global_put
+byte "DESCRIPTION"
+txna ApplicationArgs 1
+app_global_put
+byte "IMAGE"
+txna ApplicationArgs 2
+app_global_put
+byte "AMOUNT"
+txna ApplicationArgs 3
+btoi
+app_global_put
+byte "ADOPTED"
+int 0
+app_global_put
+byte "ADDRESS"
+global CreatorAddress
+app_global_put
+byte "OWNER"
+txna ApplicationArgs 4
+app_global_put
+int 1
+return
