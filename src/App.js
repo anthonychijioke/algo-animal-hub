@@ -52,6 +52,7 @@ function App() {
       })
       .catch(error => {
         console.log(error)
+        alert(error)
       })
   }
 
@@ -64,6 +65,7 @@ function App() {
       })
       .catch(error => {
         console.log(error)
+        alert(error)
       })
   }
 
@@ -77,15 +79,20 @@ function App() {
       })
       .catch(error => {
         console.log(error);
+        alert(error)
       })
   }
 
   const getAnimals = async (_address) => {
     try {
+      alert("fetching animals")
       const animals = await getAnimalsAction();
       setAnimals(animals);
     } catch (error) {
+      alert(error)
       console.log(error);
+    } finally{
+      alert("fetched")
     }
 
   };
